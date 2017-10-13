@@ -5,6 +5,7 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -127,4 +128,12 @@ public class Comic implements Parcelable, Comparable<Comic> {
         return price.compareTo(otherPrice);
     }
 
+    public static Comparator<Comic> DESC_COMPARATOR = new Comparator<Comic>() {
+        @Override
+        public int compare(Comic o1, Comic o2) {
+            Float o1Price = o1.getPrice();
+            Float o2Price = o2.getPrice();
+            return o2Price.compareTo(o1Price);
+        }
+    };
 }

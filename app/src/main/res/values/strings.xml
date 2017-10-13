@@ -2,6 +2,7 @@
     <string name="app_name">MarvelComics</string>
     <string name="comic">Comic</string>
     <string name="content_comic_image">Comic image</string>
+    <string name="enter_your_budget">Enter your budget</string>
 
     <string name="total_page">Total page: %d</string>
     <string name="price">Price: USD %.2f</string>

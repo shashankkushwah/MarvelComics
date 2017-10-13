@@ -15,7 +15,7 @@ public class ComicsData implements Parcelable {
     private int limit;
     private int total;
     private int count;
-    List<Comic> results;
+    private List<Comic> results;
 
     public int getOffset() {
         return offset;

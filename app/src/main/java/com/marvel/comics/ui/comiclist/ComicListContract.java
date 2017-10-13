@@ -16,6 +16,8 @@ public interface ComicListContract {
 
         void showComicList(List<Comic> comicList);
 
+        void showBudgetComicList(List<Comic> intBudgetComicList, int totalPageCount);
+
         void showComicDetail(Comic comic);
     }
 
@@ -25,5 +27,6 @@ public interface ComicListContract {
 
         void onComicItemClick(Comic comic);
 
+        void filterComicForBudget(String budget, List<Comic> comicList);
     }
 }
