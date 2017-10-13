@@ -2,6 +2,7 @@ package com.marvel.comics.data.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.List;
  * Created by Shashank on 13/10/2017.
  */
 
-public class Comic implements Parcelable {
+public class Comic implements Parcelable, Comparable<Comic> {
 
     private long id;
     private String title;
@@ -50,6 +51,14 @@ public class Comic implements Parcelable {
 
     public void setPageCount(int pageCount) {
         this.pageCount = pageCount;
+    }
+
+    public float getPrice() {
+        float price = 0.0f;
+        if (prices != null && !prices.isEmpty()) {
+            price = prices.get(0).getPrice();
+        }
+        return price;
     }
 
     public List<Price> getPrices() {
@@ -110,5 +119,12 @@ public class Comic implements Parcelable {
         @Override
         public Comic[] newArray(int size) {return new Comic[size];}
     };
+
+    @Override
+    public int compareTo(@NonNull Comic other) {
+        Float price = getPrice();
+        Float otherPrice = other.getPrice();
+        return price.compareTo(otherPrice);
+    }
 
 }
