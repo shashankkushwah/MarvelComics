@@ -1,5 +1,6 @@
 package com.marvel.comics.ui.comiclist;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -13,6 +14,7 @@ import com.marvel.comics.MarvelComicsApplication;
 import com.marvel.comics.R;
 import com.marvel.comics.data.model.Comic;
 import com.marvel.comics.data.network.ApiHelper;
+import com.marvel.comics.ui.comicdetail.ComicDetailActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -83,6 +85,9 @@ public class ComicListActivity extends AppCompatActivity implements ComicListCon
 
     @Override
     public void showComicDetail(Comic comic) {
+        Intent intent = new Intent(this, ComicDetailActivity.class);
+        intent.putExtra(ComicDetailActivity.EXTRA_COMIC, comic);
+        startActivity(intent);
     }
 
     @NonNull

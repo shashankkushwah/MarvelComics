@@ -35,6 +35,10 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.mockito:mockito-core:2.7.22'
+    androidTestImplementation 'org.mockito:mockito-android:2.7.22'
+
     implementation "com.android.support:recyclerview-v7:$supportLibVersion"
     // retrofit
     implementation "com.squareup.retrofit2:retrofit:$retroFitVersion"
