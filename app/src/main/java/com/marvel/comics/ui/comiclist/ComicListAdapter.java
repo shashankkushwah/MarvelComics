@@ -12,7 +12,10 @@ import com.marvel.comics.R;
 import com.marvel.comics.data.model.Comic;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 /**
  * Created by Shashank on 13/10/2017.
@@ -24,10 +27,13 @@ public class ComicListAdapter extends RecyclerView.Adapter<ComicListAdapter.Comi
     private ComicClickListener comicClickListener;
     private Picasso picasso;
 
-    public ComicListAdapter(@NonNull List<Comic> comicList, @NonNull Picasso picasso, @NonNull ComicClickListener
-            comicClickListener) {
-        this.comicList = comicList;
+    @Inject
+    public ComicListAdapter(@NonNull Picasso picasso) {
+        this.comicList = new ArrayList<>(0);
         this.picasso = picasso;
+    }
+
+    public void setComicClickListener(ComicClickListener comicClickListener) {
         this.comicClickListener = comicClickListener;
     }
 

@@ -7,6 +7,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import io.reactivex.Observable;
+import io.reactivex.functions.Predicate;
+
 /**
  * Created by Shashank on 13/10/2017.
  */
@@ -17,6 +22,7 @@ public class ComicListPresenter implements ComicListContract.Presenter {
     private ComicListContract.View comicListView;
     private ApiHelper apiHelper;
 
+    @Inject
     public ComicListPresenter(ComicListContract.View comicListView, ApiHelper apiHelper) {
         this.comicListView = comicListView;
         this.apiHelper = apiHelper;
@@ -50,6 +56,7 @@ public class ComicListPresenter implements ComicListContract.Presenter {
     public void filterComicForBudget(String budgetStr, List<Comic> comicList) {
         try {
             float budget = Float.parseFloat(budgetStr);
+
             Collections.sort(comicList);
             List<Comic> inBudgetComicList = new ArrayList<>();
             float total = 0f;

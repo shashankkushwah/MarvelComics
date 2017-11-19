@@ -15,11 +15,16 @@ import com.marvel.comics.data.model.Comic;
 import com.marvel.comics.data.model.ComicImage;
 import com.marvel.comics.data.model.CreatorDetails;
 import com.marvel.comics.data.model.CreatorsData;
+import com.marvel.comics.di.comicdetail.ComicDetailActivityComponent;
+import com.marvel.comics.di.comicdetail.ComicDetailActivityModule;
+import com.marvel.comics.di.comicdetail.DaggerComicDetailActivityComponent;
 import com.marvel.comics.utils.Utils;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 import java.util.Locale;
+
+import javax.inject.Inject;
 
 public class ComicDetailActivity extends AppCompatActivity implements ComicDetailContract.View {
 
@@ -32,16 +37,22 @@ public class ComicDetailActivity extends AppCompatActivity implements ComicDetai
     private TextView priceTextView;
     private TextView authorsTextView;
 
-    private ComicDetailContract.Presenter presenter;
-    private Picasso picasso;
+    @Inject
+    ComicDetailPresenter presenter;
+
+    @Inject
+    Picasso picasso;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comic_detail);
 
-        picasso = getPicasso();
-        presenter = new ComicDetailPresenter(this);
+        ComicDetailActivityComponent component = DaggerComicDetailActivityComponent.builder()
+                .applicationComponent(MarvelComicsApplication.get(this)
+                        .getComponent()).build();
+        component.injectComicDetailActivity(this);
+
         setupViews();
 
         Comic comic = getIntent().getParcelableExtra(EXTRA_COMIC);
@@ -94,11 +105,6 @@ public class ComicDetailActivity extends AppCompatActivity implements ComicDetai
             }
         }
         authorsTextView.setText(authorsBuilder.toString());
-    }
-
-    @NonNull
-    private Picasso getPicasso() {
-        return ((MarvelComicsApplication) getApplication()).getPicasso();
     }
 
     @Override

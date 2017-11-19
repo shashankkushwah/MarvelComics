@@ -20,12 +20,16 @@ import com.marvel.comics.MarvelComicsApplication;
 import com.marvel.comics.R;
 import com.marvel.comics.data.model.Comic;
 import com.marvel.comics.data.network.ApiHelper;
+import com.marvel.comics.di.comiclist.ComicListActivityComponent;
+import com.marvel.comics.di.comiclist.DaggerComicListActivityComponent;
 import com.marvel.comics.ui.comicdetail.ComicDetailActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
+import javax.inject.Inject;
 
 public class ComicListActivity extends AppCompatActivity implements ComicListContract.View, ComicListAdapter
         .ComicClickListener {
@@ -34,9 +38,17 @@ public class ComicListActivity extends AppCompatActivity implements ComicListCon
     private CardView totalCountCardView;
     private TextView totalCountTextView;
 
-    private ComicListContract.Presenter presenter;
-    private ComicListAdapter adapter;
-    private Picasso picasso;
+    @Inject
+    public ComicListAdapter adapter;
+
+    @Inject
+    public ComicListPresenter presenter;
+
+    @Inject
+    public Picasso picasso;
+
+    @Inject
+    public ApiHelper apiHelper;
 
     private List<Comic> comicList;
 
@@ -45,15 +57,18 @@ public class ComicListActivity extends AppCompatActivity implements ComicListCon
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comic_list);
 
-        picasso = getPicasso();
-        presenter = new ComicListPresenter(this, getApiHelper());
+        ComicListActivityComponent component = DaggerComicListActivityComponent.builder()
+                .applicationComponent(MarvelComicsApplication.get(this)
+                        .getComponent()).build();
+        component.injectComicListActivity(this);
+
         setupViews();
         presenter.loadComicList();
+        adapter.setComicClickListener(this);
     }
 
     private void setupViews() {
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
-        adapter = new ComicListAdapter(new ArrayList<Comic>(0), picasso, this);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
@@ -134,16 +149,6 @@ public class ComicListActivity extends AppCompatActivity implements ComicListCon
         Intent intent = new Intent(this, ComicDetailActivity.class);
         intent.putExtra(ComicDetailActivity.EXTRA_COMIC, comic);
         startActivity(intent);
-    }
-
-    @NonNull
-    private ApiHelper getApiHelper() {
-        return ((MarvelComicsApplication) getApplication()).getApiHelper();
-    }
-
-    @NonNull
-    private Picasso getPicasso() {
-        return ((MarvelComicsApplication) getApplication()).getPicasso();
     }
 
     @Override
